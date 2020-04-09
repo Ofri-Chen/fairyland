@@ -3,8 +3,9 @@ module.exports = class FairiesRepository {
         this.fairiesByIds = {};
     }
 
-    upsertFairy(fairy) {
-        this.fairiesByIds[fairy.id] = fairy;
+    upsertFairy(id, fairy) {
+        fairy.id = id;
+        this.fairiesByIds[id] = fairy;
     }
 
     deleteFairy(fairyId) {
@@ -17,8 +18,10 @@ module.exports = class FairiesRepository {
 
     getFairiesByIds(fairiesIds) {
         const fairies = [];
-        for(let id of faireisIds) {
-            fairies.push(this.fairiesByIds[id]);
+        for (let id of fairiesIds) {
+            if (this.fairiesByIds[id]) {
+                fairies.push(this.fairiesByIds[id]);
+            }
         }
 
         return fairies;

@@ -28,14 +28,14 @@ app.delete('/fairies/:id', (req, res) => {
     res.status(200).send('Fairy deleted successfully !');
 });
 
+app.post('/_getFairiesByIds', (req, res) => {
+    const fairies = controller.getFairiesByIds(req.body);
+    res.status(200).send(fairies);
+});
+
 app.get('/fairies/:id', (req, res) => {
     const fairy = controller.getFairy(req.params.id);
     res.status(200).send(fairy);
-});
-
-app.post('/fairies/_getByIds', (req, res) => {
-    const fairies = controller.getFairiesByIds(req.body);
-    res.status(200).send(fairies);
 });
 
 app.get('/fairies', (req, res) => {

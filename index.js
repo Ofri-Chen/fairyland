@@ -33,7 +33,7 @@ app.get('/fairies/:id', (req, res) => {
     res.status(200).send(fairy);
 });
 
-app.get('/fairies/_getByIds', (req, res) => {
+app.post('/fairies/_getByIds', (req, res) => {
     const fairies = controller.getFairiesByIds(req.body);
     res.status(200).send(fairies);
 });

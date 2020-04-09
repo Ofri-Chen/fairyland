@@ -1,4 +1,5 @@
 const FairyError = require('./fairy-error');
+const utils = require('./utils');
 
 module.exports = class FairiesController {
     fairyProps = ['name', 'spells', 'subFairies'];
@@ -92,6 +93,12 @@ module.exports = class FairiesController {
     }
 
     validateSubFairies(id, subFairies) {
+        const dupes = utils.getDupes(subFairies);
+
+        if (dupes.length > 0) {
+            throw new FairyError(`duplicated subFairies are not allowed (${JSON.stringify(dupes)})`, 409);
+        }
+
         if (this.fairiesRepository.getFairiesByIds(subFairies).length < subFairies.length) {
             throw new FairyError(`not all the subfairies exist`, 400);
         }
@@ -112,19 +119,10 @@ module.exports = class FairiesController {
     }
 
     validateSpells(spells) {
-        const checkedSet = new Set();
-        const dupesSet = new Set();
+        const dupes = utils.getDupes(spells);
 
-        spells.forEach(spell => {
-            if (checkedSet.has(spell)) {
-                dupesSet.add(spell);
-            } else {
-                checkedSet.add(spell);
-            }
-        });
-
-        if (dupesSet.size > 0) {
-            throw new FairyError(`duplicated spells are not allowed (${new Array(dupesSet)})`, 409);
+        if (dupes.length > 0) {
+            throw new FairyError(`duplicated spells are not allowed (${JSON.stringify(dupes)})`, 409);
         }
     }
 }
